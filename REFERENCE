@@ -1,0 +1,25 @@
+const options = {
+  method: 'GET',
+  headers: { 'Accept': 'application/json', 'X-API-Key': 'your API Key' },
+};
+fetch('https://deep-index.moralis.io/api/v2/block/1000?chain=eth', options)
+  .then((response) => response.json())
+  .then((response) => printResult(response))
+  .catch((err) => console.error(err))
+
+const printResult = (response) => {
+  const container = document.getElementById('result')
+  container.innerHTML = "<pre>" + JSON.stringify(response ,null, 2) + "</pre>"
+}
+
+// https://www.youtube.com/watch?v=C9yA8LcJsIY
+
+// youtube.com/watch?v=h0Vh486fVrYyoutube.com/watch?v=h0Vh486fVrY
+// https://www.youtube.com/watch?v=Zl8JD2NVjws
+// https://www.youtube.com/watch?v=efXL6bxGXY8
+// https://www.youtube.com/watch?v=GiDXKT_AAIs
+// https://www.youtube.com/watch?v=t8U7GRrlYW8
+
+// https://www.youtube.com/results?search_query=moralis+web3+tutorial
+
+
