@@ -1,7 +1,7 @@
 const Moralis = require('moralis').default
 const express = require('express')
 const app = express()
-const port = 8080
+const port = 8088
 const cors = require("cors")
 require("dotenv").config()
 
