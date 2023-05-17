@@ -1,18 +1,18 @@
 const Moralis = require('moralis').default
 const express = require('express')
 const app = express()
-const port = 8088
+const port = 8080
 const cors = require("cors")
 require("dotenv").config()
 
 app.use(cors())
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('Welcome to Xerxis!')
 })
 
 app.get('/from_moralis', (req, res) => {
-  res.send('Hello World!')
+  res.send('Welcome to Xerxis!')
 })
 
 app.get('/nativeBalance', async (req, res) => {
@@ -52,7 +52,39 @@ app.get('/nativeBalance', async (req, res) => {
   } catch (error) {
     res.send(error)
   }
-  // res.send('Hello World!')
+})
+
+app.get('/tokenBalances', async (req, res) => {
+  await Moralis.start({apiKey: process.env.MORALIS_API_KEY})
+
+  try {
+    const {address, chain} = req.query
+    const response = await Moralis.EvmApi.token.getWalletTokenBalances({
+      address: address,
+      chain: chain,
+    });
+
+    let tokens = response
+    let legitTokens = []
+
+    for( i = 0 ; i<tokens.length; i++){
+      const tokenPrice = await Moralis.EvmApi.token.getTokenPrice({
+        address: nativeCurrency,
+        chain: chain
+      })
+
+      if (tokenPrice.toJSON().usdPrice > 0.0001){
+        tokens[i].usd = tokenPrice.toJSON().usdPrice
+        legitTokens.push(token[i])
+      }
+    }  
+
+    res.send([legitTokens,tokens])
+
+  } catch (error) {
+    res.send(error)
+  }
+  
 })
 
 app.listen(port, () => {
