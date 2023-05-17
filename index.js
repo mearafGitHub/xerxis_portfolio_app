@@ -16,9 +16,9 @@ app.get('/from_moralis', (req, res) => {
 })
 
 app.get('/nativeBalance', async (req, res) => {
-
-  await Moralis.start({apiKey: process.env.MORALIS_API_KEY})
+ 
   try {
+    await Moralis.start({apiKey: process.env.MORALIS_API_KEY})
     const {address, chain} = req.query
     const response = await Moralis.EvmApi.balance.getNativeBalance({
       address: address,
@@ -27,7 +27,7 @@ app.get('/nativeBalance', async (req, res) => {
     const nativeBalance = response.toJSON().balance
     console.log("native Balance: ", nativeBalance)
 
-    let nativeCurrency   // wrapped contract
+    let nativeCurrency   // containes the wrapped native currency contract of a chain
     if (chain == "0x1") {
       nativeCurrency = "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2" 
     } else if(chain == "0x89") {
@@ -46,7 +46,8 @@ app.get('/nativeBalance', async (req, res) => {
 
     const balance = {
       balance: nativeBalance, 
-      balance_usd: totalInUsd
+      balance_usd: totalInUsd,
+      token_price_usd: nativePrice.toJSON().usdPrice
     }
     res.send(balance)
   } catch (error) {
@@ -82,9 +83,9 @@ app.get('/tokenBalances', async (req, res) => {
     res.send([legitTokens,tokens])
 
   } catch (error) {
-    res.send(error)
+    res.error(error)
   }
-  
+
 })
 
 app.listen(port, () => {
